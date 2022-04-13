@@ -9,7 +9,7 @@
     */  
 
     if(!defined('ABSPATH')){
-        header("Location: /Gravity");
+        header("Location: /PLUGINDEVELOPMENT");
         die();
     }
 
@@ -25,9 +25,6 @@
     $wpdb->query($q);
 
     // Insert dummy data for testing
-
-    // $q = "INSERT INTO `$dg_form` (`id`, `title`, `created_on`, `updated_on`, `status`, `is_trash`)
-    //  VALUES (NULL, 'test', '2022-04-12 18:10:41.000000', '2022-04-12 18:10:41.000000', 1, 0)" ;
 
     $data = array(
       'id' => NULL,
@@ -55,8 +52,77 @@
    register_deactivation_hook( __FILE__, 'my_plugin_deactivation' );
 
    // Plugin shortcode
-//   function my_sc_function(){
-//     return "my function call";
-//   }
-//   add_shortcode('my_sc', 'my_sc_function');
-?>
+   /* function dg_form_shortcode($atts){
+    $atts = array_change_key_case((array) $atts,CASE_LOWER);
+     $atts = shortcode_atts( array(
+      'type' => 'img-gallery'
+    ), $atts);
+     
+      include $atts['type'].'.php';
+   }
+   add_shortcode('dg_form', 'dg_form_shortcode'); */
+
+   // Add stylesheets and scripts
+   function plugin_custom_scripts() 
+   {
+      //Stylesheets
+      $path_style    = plugins_url('assets/css/style.css', __FILE__);
+      $depend_style  = array("");
+      $style_version = filemtime(plugin_dir_path(__FILE__)."assets/css/style.css");
+      // Js files
+      $path_js    = plugins_url('assets/js/main.js', __FILE__);
+      $depend_js  = array("jQuery");
+      $js_version = filemtime(plugin_dir_path(__FILE__)."assets/js/main.js");
+
+    wp_enqueue_style('bootstrap4', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css');
+    wp_enqueue_script( 'boot1','https://code.jquery.com/jquery-3.3.1.slim.min.js', array( 'jquery' ),'',true );
+    wp_enqueue_script( 'boot2','https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', array( 'jquery' ),'',true );
+    wp_enqueue_script( 'boot3','https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js', array( 'jquery' ),'',true );
+
+    wp_enqueue_style( 'plugin_main_stylesheet', $path_style , '' , $style_version );
+    wp_enqueue_script( 'plugin_main_script', $path_js , '$depend_js' , $js_version , true );
+  }
+   
+  add_action( 'admin_enqueue_scripts', 'plugin_custom_scripts' );
+  add_action( 'wp_enqueue_scripts', 'plugin_custom_scripts' );
+
+  // Show plugin menu in admin
+   function dg_form_menu() 
+   {
+      $menu_slug = "dg_form_page";
+        add_menu_page(
+            __( 'Custom Menu Title', 'textdomain' ),
+            'DG Forms',
+            'manage_options',
+            $menu_slug,
+            'dg_plugin_function',
+            '',
+            6
+        );
+      // Add submenu Page
+        add_submenu_page(
+              $menu_slug,
+            __( 'Custom Menu Title', 'textdomain' ),
+            __( 'New Form', 'textdomain' ),
+            'manage_options',
+            'dg_plugin_subpage',
+            'dg_plugin_subpage_function'
+        );
+    }
+
+    add_action( 'admin_menu', 'dg_form_menu' );
+
+    // Main menu page
+    function dg_plugin_function(){
+      include 'admin/form-list.php';
+    };
+
+    // submenu page
+      function dg_plugin_subpage_function(){
+        echo "hello";
+      }
+
+   
+  
+
+   

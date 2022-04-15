@@ -1,3 +1,15 @@
- .text-center{
-     text-align: left;
- }
+
+ .modal-notify .modal-header {
+    border-radius: 3px 3px 0 0;
+}
+.modal-notify .modal-content {
+    border-radius: 3px;
+}
+
+.required:after {
+    content:" *";
+    color: rgb(255, 0, 0);
+  }
+
+  input.inputerror:focus {border-color: #e71d1d !important;
+    box-shadow: 0 0 0 1px #e71d1d;}

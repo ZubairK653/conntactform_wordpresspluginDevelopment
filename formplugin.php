@@ -1,11 +1,11 @@
 <?php
     /* 
-    Plugin Name: My Contact Form
+    Plugin Name: Contact Form Builder 
     Plugin URI: http://www.wordpress.org 
     Description: A plugin for creating contact forms
-    Author: Deligent 
+    Author: M Zubair
     Version: 1.0 
-    Author URI: http://www.xyz.com 
+    Author URI: http://www.wordpress.org 
     */  
 
     if(!defined('ABSPATH')){
@@ -52,7 +52,7 @@
    register_deactivation_hook( __FILE__, 'my_plugin_deactivation' );
 
    // Plugin shortcode
-   /* function dg_form_shortcode($atts){
+   function dg_form_shortcode($atts){
     $atts = array_change_key_case((array) $atts,CASE_LOWER);
      $atts = shortcode_atts( array(
       'type' => 'img-gallery'
@@ -60,11 +60,17 @@
      
       include $atts['type'].'.php';
    }
-   add_shortcode('dg_form', 'dg_form_shortcode'); */
+   add_shortcode('dg_form', 'dg_form_shortcode');
 
    // Add stylesheets and scripts
-   function plugin_custom_scripts() 
+   function plugin_custom_scripts($hook) 
    {
+     // use   
+    if(
+      ( 'toplevel_page_dg_form_page' == $hook )
+      ||
+      ( 'dg-forms_page_dg_plugin_subpage' == $hook )
+  ){
       //Stylesheets
       $path_style    = plugins_url('assets/css/style.css', __FILE__);
       $depend_style  = array("");
@@ -73,14 +79,20 @@
       $path_js    = plugins_url('assets/js/main.js', __FILE__);
       $depend_js  = array("jQuery");
       $js_version = filemtime(plugin_dir_path(__FILE__)."assets/js/main.js");
+       
+      wp_enqueue_style('jQuery', 'https://code.jquery.com/jquery-2.2.4.min.js');
+      // Include Bootstrap cdn
+      wp_enqueue_style('bootstrap4', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css');
+      wp_enqueue_script( 'boot1','https://code.jquery.com/jquery-3.1.1.min.js', array( 'jquery' ),'',true );
+      wp_enqueue_script( 'boot2','https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', array( 'jquery' ),'',true );
+      wp_enqueue_script( 'boot3','https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js', array( 'jquery' ),'',true );
 
-    wp_enqueue_style('bootstrap4', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css');
-    wp_enqueue_script( 'boot1','https://code.jquery.com/jquery-3.3.1.slim.min.js', array( 'jquery' ),'',true );
-    wp_enqueue_script( 'boot2','https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', array( 'jquery' ),'',true );
-    wp_enqueue_script( 'boot3','https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js', array( 'jquery' ),'',true );
+       wp_enqueue_style( 'plugin_main_stylesheet', $path_style , '' , $style_version );
+       wp_enqueue_script( 'plugin_main_script', $path_js , '$depend_js' , $js_version , true );
 
-    wp_enqueue_style( 'plugin_main_stylesheet', $path_style , '' , $style_version );
-    wp_enqueue_script( 'plugin_main_script', $path_js , '$depend_js' , $js_version , true );
+       // access admin-ajax file to the plugin
+       wp_add_inline_script('plugin_main_script', 'var ajaxUrl ="'.admin_url('admin-ajax.php').'";', 'before' );
+    }
   }
    
   add_action( 'admin_enqueue_scripts', 'plugin_custom_scripts' );
@@ -105,7 +117,7 @@
             __( 'Custom Menu Title', 'textdomain' ),
             __( 'New Form', 'textdomain' ),
             'manage_options',
-            'dg_plugin_subpage',
+            'dg_plugin_newform',
             'dg_plugin_subpage_function'
         );
     }
@@ -119,10 +131,46 @@
 
     // submenu page
       function dg_plugin_subpage_function(){
-        echo "hello";
+        include 'admin/new-form.php';
       }
+  
+   add_action("wp_ajax_dg_submit_function", "dg_submit_function");
+    
+   function dg_submit_function(){
+    
+    $title       = $_POST['title'];
 
-   
+    if(empty($title)){
+      echo json_encode(['status' => 202, 'message' => "Title can't be empty"],false);
+     //echo "empty";
+      die();
+    }
+    else{
+     $descritpion = $_POST['description'];
+
+      // Add data to database
+      global $wpdb, $table_prefix;
+      $dg_form = $table_prefix.'dg_form';
+
+      $data = array(
+        'id' => NULL,
+        'title' => $title,
+      );
+      
+      $save = $wpdb->insert($dg_form, $data);
+      if($save == 1){
+        $pageurl = admin_url('admin.php?page=dg_plugin_newform');
+        echo json_encode( ['status' => 200, 'message' => 'Data Saved successfully!' , 'pageurl' => $pageurl] ,false);
+      die();
+      } 
+      else{
+        echo json_encode( ['status' => 202, 'message' => 'Error!!! Data not saved!'] ,false);
+        die();
+      }
+    }
+     
+  }
+
   
 
    

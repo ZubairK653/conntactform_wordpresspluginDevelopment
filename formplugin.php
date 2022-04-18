@@ -66,10 +66,11 @@
    function plugin_custom_scripts($hook) 
    {
      // use   
+    // echo $hook; exit;dg-forms_page_dg_plugin_newform
     if(
       ( 'toplevel_page_dg_form_page' == $hook )
       ||
-      ( 'dg-forms_page_dg_plugin_subpage' == $hook )
+      ( 'dg-forms_page_dg_plugin_newform' == $hook )
   ){
       //Stylesheets
       $path_style    = plugins_url('assets/css/style.css', __FILE__);
@@ -87,6 +88,9 @@
       wp_enqueue_script( 'boot2','https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', array( 'jquery' ),'',true );
       wp_enqueue_script( 'boot3','https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js', array( 'jquery' ),'',true );
 
+      wp_register_style( 'font-awesome',  'https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' );
+
+      wp_enqueue_style( 'font-awesome' );
        wp_enqueue_style( 'plugin_main_stylesheet', $path_style , '' , $style_version );
        wp_enqueue_script( 'plugin_main_script', $path_js , '$depend_js' , $js_version , true );
 
@@ -134,15 +138,25 @@
         include 'admin/new-form.php';
       }
   
+      // Add form to the database using ajax
    add_action("wp_ajax_dg_submit_function", "dg_submit_function");
+
+   // Remove any invalid data from the form data
+
+   function remove_invaliddata($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    $data = strip_tags($data);
+    return $data;
+  }
     
    function dg_submit_function(){
     
-    $title       = $_POST['title'];
-
+    $title        = $_POST['title'];
+    $title        = remove_invaliddata($title);
     if(empty($title)){
       echo json_encode(['status' => 202, 'message' => "Title can't be empty"],false);
-     //echo "empty";
       die();
     }
     else{
@@ -156,6 +170,7 @@
         'id' => NULL,
         'title' => $title,
       );
+      
       
       $save = $wpdb->insert($dg_form, $data);
       if($save == 1){

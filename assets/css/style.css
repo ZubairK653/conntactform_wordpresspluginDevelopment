@@ -13,3 +13,183 @@
 
   input.inputerror:focus {border-color: #e71d1d !important;
     box-shadow: 0 0 0 1px #e71d1d;}
+
+@media only screen and (min-width: 768px){
+    .dg-forms_page_dg_plugin_newform div #wpcontent {
+      margin-left: 140px !important;
+    }
+  }
+ .container-newform{
+  width: 100%; margin-left: 0px; padding-left: 0px; padding-right: 0px;
+}
+
+  .navbar-custom{
+    border-bottom: 1px solid #ecedf8;
+    /* padding-top: 0px; */
+    /* padding-bottom: 0px; */
+
+  }
+ 
+  li.nav-item.forms-dropdown   {
+    /* border-right: 1px solid #ecedf8; */
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    width: 210px;
+}
+.forms-dropdown a.dropdown-toggle{border: 1px solid #ecedf8;}
+
+
+/* Style the tab */
+.form-editor-right .tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  margin-top: 10px;
+}
+
+/* Style the buttons inside the tab */
+.form-editor-right .tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  width: 50%;;
+}
+
+/* Change background color of buttons on hover */
+.form-editor-right .tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.form-editor-right .tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.form-editor-right .tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.form-editor{
+  display: flex;
+}
+
+.form-editor-left{
+  float: left;
+  width: 70% !important;
+  max-width: 70% !important;
+  padding: 4rem 3rem 8rem
+}
+
+.form-editor-right{
+  float: right;
+  position: fixed;
+  right: 1%;
+  border-left: 1px solid #ecedf8;
+  padding-left: 2px;
+  /* max-height: calc(100% - 85px); */
+  min-height: calc(100% - 85px);
+  width: 370px;
+}
+
+.form-editor-right .search-button {margin-top: 10px;}
+
+.drage-field-heading{
+
+}
+
+ /*******************************
+* Does not work properly if "in" is added after "collapse".
+* Get free snippets on bootpen.com
+*******************************/
+.panel-group .panel {
+  border-radius: 0;
+  box-shadow: none;
+  border-color: #EEEEEE;
+}
+
+.panel-default > .panel-heading {
+  padding: 0;
+  border-radius: 0;
+  color: #212121;
+ 
+  border-color: #EEEEEE;
+}
+
+.panel-title {
+  font-size: 14px;
+}
+
+.panel-title > a {
+  display: block;
+  padding: 15px;
+  text-decoration: none;
+}
+
+.more-less {
+  float: right;
+  color: #212121;
+}
+
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #EEEEEE;
+}
+
+/* ----- v CAN BE DELETED v ----- */
+ 
+
+ /* .fields-accordion{
+   border-top: 1px solid #ecedf8;
+  
+ } */
+
+ .fields-accordion .panel.panel-default {border-top: 1px solid #ecedf8;}
+
+ .standardfields{    
+   align-content: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  overflow: visible;}
+ .standardfields li{ margin-right: 3px; display: inline; list-style: none;} 
+
+ .fields-button{
+  align-items: stretch;
+  background: 0 0;
+  border: 1px solid #d5d7e9;
+  border-radius: 3px;
+  color: #242748;
+  cursor: -webkit-grab;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  font-size: .8125rem;
+  height: 5.8125rem;
+  justify-content: space-around;
+  margin: 0 auto;
+  padding: 0.5rem 0 0 0;
+  transition: .1s all ease-in-out;
+  width: 6.1875rem;
+  word-break: break-word;
+ }
+ .button-text {font-size: .75rem;
+  font-weight: 400;
+  line-height: 1rem;
+  padding: 0 0 0.5rem;
+  text-align: center;}
+
+  .button-icon {border-radius: 3px;
+    font-family: dashicons;
+    font-size: 1.3125rem;
+    height: 1.5rem;
+    text-align: center;
+    width: 100%;}

@@ -36,7 +36,6 @@ jQuery(document).ready(function($){
                         $('#messageR').removeClass('alert-danger');
                         $('#messageR').addClass('alert-success');
                         $('#formtitle').removeClass('inputerror');
-
                         window.location.href = res.pageurl ;
                 }
                 else{
@@ -60,4 +59,45 @@ jQuery(document).ready(function($){
  });
 
 
- 
+
+ $(document).ready(function(){
+    $(".dropdown").hover(            
+        function() {
+            $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true,true).slideDown("400");
+            $(this).toggleClass('open');        
+        },
+        function() {
+            $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true,true).slideUp("400");
+            $(this).toggleClass('open');       
+        }
+    );
+});
+
+// Tabs for right sidebar
+function openField(evt, fieldName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(fieldName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+
+
+ // field accordion
+ function toggleIcon(e) {
+    $(e.target)
+        .prev('.panel-heading')
+        .find(".more-less")
+        .toggleClass('fa fa-angle-down fa fa-angle-up');
+}
+$('.panel-group').on('hidden.bs.collapse', toggleIcon);
+$('.panel-group').on('shown.bs.collapse', toggleIcon);
